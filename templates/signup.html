@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block head %}
+<title>Sign Up</title>
+{% endblock %}
+{% block body %}
+<div id="signup-page">
+  <div>
+    <h1>Scholium</h1>
+    <p>C'mon, let's share notes!</p>
+  </div>
+  <form action="/signup" method="post">
+    <h2>Sign Up</h2>
+    <input type="text" name="username" placeholder="Username" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="password" name="confirm-password" placeholder="Confirm Password" required><br>
+    <input type="submit" value="Sign Up">
+    <p>Already have an account?<br><a href="{{url_for("index")}}">Login</a></p>
+    {% if error %}
+        <p class="auth-err">{{error}}</p>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block head %}
+<title>Dashboard</title>
+{% endblock %}
+{%block body%}
+<nav>
+  <h1>Scholium</h1>
+  <ul>
+    <li><a href="{{url_for("change")}}">Change Password</a></li>
+    <li><a href="{{url_for("logout")}}">Logout</a></li>
+  </ul>
+</nav>
+<section id="dashboard">
+<aside id="sidebar">
+  <div id="categories">
+    <input type="text" id="search" placeholder="Search..."><br><br>
+  
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="mine">My Uploads</button>
+  
+    {% for subject in subjects %}
+      <button data-filter="subject" data-subject="{{ subject }}">
+        {{ subject }}
+      </button>
+    {% endfor %}
+  </div>
+  {% if not is_restricted %}
+    <form action="{{url_for("upload_file")}}" method="post" enctype="multipart/form-data" id="upload-file">
+      <h2>Upload a file</h2>
+      <small>Accepted file extentions: <i>.pdf, .txt, .png, .jpg. .jpeg</i></small><br>
+      <input type="text" name="title" placeholder="Title" required><br>
+      <input type="text" name="subject" placeholder="Subject"><br>
+      <input type="file" name="file" required><br>
+      <button type="submit">Upload</button>
+    </form>
+  {% endif %}
+</aside>
+  <main id="files">
+    <h2>Files</h2>
+    <div id="uploads"></div>
+  </main>
+<div id="editModal" style="display:none;">
+  <form id="editForm" method="post" enctype="multipart/form-data">
+    <input type="text" name="title" id="editTitle" required><br>
+    <input type="text" name="subject" id="editSubject"><br>
+    <input type="file" name="file"><br>
+
+    <button type="submit">Save</button>
+    <button type="button" onclick="closeEdit()">Cancel</button>
+  </form>
+</div>
+</section>
+<script>
+  const uploads = {{ uploads_data | tojson }};
+  const currentUserId = {{ current_user_id }};
+</script>
+<script src="{{url_for("static", filename="dashboard.js")}}"></script>
+{% endblock %}

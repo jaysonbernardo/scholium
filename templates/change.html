@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block head %}
+<title>Change Password</title>
+{% endblock %}
+{% block body%}
+<h1>Scholium</h1>
+<form action="/change" method="post">
+  <h2>Change Password</h2>
+  <input type="password" name="curpass" placeholder="Current Password" required><br>
+  <input type="password" name="newpass" placeholder="New Password" required><br>
+  <input type="password" name="newpass-confirm" placeholder="Confirm New Password" required><br>
+  <input type="submit" value="Confirm">
+  <button onclick="window.location.href='{{url_for('dashboard')}}';">Cancel</button>
+  {% if error %}
+    <p class="auth-err">{{error}}</p>
+  {% endif %}
+</form>
+{% endblock %}

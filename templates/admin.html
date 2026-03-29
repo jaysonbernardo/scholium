@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block head %}
+<title>Admin Panel</title>
+{% endblock %}
+
+{% block body %}
+<main>
+  <nav>
+    <h1>Admin Panel</h1>
+    <ul>
+      <li><a href="{{ url_for('change') }}">Change Password</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- USERS -->
+  <section id="users-section">
+    <h2>Users</h2>
+
+    <input type="text" id="userSearch" placeholder="Search users...">
+
+    <ol id="usersList">
+      {% for user in users %}
+        {% if user.username != "admin" %}
+          <li class="user-item" data-username="{{ user.username | lower }}">
+            {{ user.username }}
+
+            <form action="{{ url_for('restrictions') }}" method="post" style="display:inline;">
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+
+              {% if user.is_restricted %}
+                (Restricted)
+                <button type="submit" name="action" value="unrestrict">Unrestrict</button>
+              {% else %}
+                <button type="submit" name="action" value="restrict">Restrict</button>
+              {% endif %}
+            </form>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </section>
+
+  <!-- UPLOADS -->
+  <section id="uploads-section">
+    <h2>Uploads</h2>
+
+    <input type="text" id="uploadSearch" placeholder="Search uploads...">
+
+    <div id="uploadFilters">
+      <button data-filter="all" class="active">All</button>
+
+      {% for subject in subjects %}
+        <button data-filter="subject" data-subject="{{ subject }}">
+          {{ subject }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <ul id="uploadsList"></ul>
+  </section>
+</main>
+
+<script>
+  const uploads = {{ uploads | tojson }};
+</script>
+
+<script src="{{ url_for('static', filename='admin.js') }}"></script>
+{% endblock %}
