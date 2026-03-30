@@ -85,7 +85,7 @@ buttons.forEach(btn => {
 function deleteFile(id) {
   if (!confirm("Are you sure you want to delete this file? This action cannot be undone.")) return;
 
-  fetch(`/delete_my_upload/${id}`, {
+  fetch(`/delete_upload/${id}`, {
     method: "POST"
   }).then(() => {
     location.reload();
