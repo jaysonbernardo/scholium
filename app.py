@@ -263,10 +263,9 @@ def delete_upload(upload_id):
         return {"error": "Unauthorized"}, 401
 
     user = User.query.get(user_id)
-    if not user.is_admin:
-        return {"error": "Forbidden"}, 403
-
     upload = Upload.query.get_or_404(upload_id)
+    if upload.user.id != user.id and not user.is_admin:
+        return {"error": "Forbidden"}, 403
 
     file_path = os.path.join(app.config["UPLOAD_FOLDER"], upload.filename)
     if os.path.exists(file_path):
